@@ -1,0 +1,44 @@
+version: '3'
+services:
+  tracker:
+    build: .
+    container_name: tracker
+    image: skinsen/fastdfs
+    command: tracker
+    # network_mode: host
+    volumes:   
+      - /private/var/fdfs/tracker:/var/fdfs    
+
+  storage0:
+    build: .
+    container_name: storage0
+    image: skinsen/fastdfs
+    command: storage
+    # network_mode: host  
+    environment:
+      - TRACKER_SERVER=tracker:22122
+    volumes: 
+      - /private/var/fdfs/storage0:/var/fdfs
+    ports:
+      - "5000:80"
+
+  # storage1:
+  #   container_name: storage1
+  #   image: luhuiguo/fastdfs
+  #   command: storage
+  #   network_mode: host  
+  #   environment:
+  #     - TRACKER_SERVER=10.1.5.85:22122
+  #   volumes: 
+  #     - /var/fdfs/storage1:/var/fdfs
+  #  storage2:
+  #   container_name: storage2
+  #   image: luhuiguo/fastdfs
+  #   command: storage
+  #   network_mode: host  
+  #   environment:
+  #     - TRACKER_SERVER=10.1.5.85:22122
+  #     - GROUP_NAME=group2
+  #     - PORT=24000
+  #   volumes: 
+  #     - /var/fdfs/storage2:/var/fdfs  
